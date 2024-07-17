@@ -1,4 +1,5 @@
 from Cancion import Cancion
+from Trie import Trie  # Asegúrate de tener la implementación de Trie y TNode correctamente
 import csv
 
 def leer_canciones_desde_csv(nombre_archivo):
@@ -29,12 +30,30 @@ def leer_canciones_desde_csv(nombre_archivo):
             )
             canciones.append(cancion)
     return canciones
-#Test de la lectura de la cancion 10000
-archivo_csv = 'spotify_data.csv' 
-canciones = leer_canciones_desde_csv(archivo_csv)
 
-if canciones:
-    primera_cancion = canciones[0]
-    print(primera_cancion.get_artist_name())
-    print(primera_cancion.get_track_name())
-    print(primera_cancion.get_popularity())
+def ejemplo_busqueda_por_titulo():
+    archivo_csv = 'spotify_data.csv'  # Reemplaza con tu archivo CSV real
+    canciones = leer_canciones_desde_csv(archivo_csv)
+
+    trie = Trie()
+
+    # Insertar todas las canciones en el trie por título
+    for cancion in canciones:
+        trie.insert(cancion)
+
+    # Ejemplo de búsqueda por título
+    titulo_cancion = 'I\'m Yours'  # Reemplaza con el título de la canción que desees buscar
+    cancion_encontrada = trie.search(titulo_cancion)
+
+    if cancion_encontrada:
+        print("Canción:", cancion_encontrada.get_track_name())
+        print("Artista:", cancion_encontrada.get_artist_name())
+        print("Popularidad:", cancion_encontrada.get_popularity())
+        print("Año:", cancion_encontrada.get_year())
+        print("Género:", cancion_encontrada.get_genre())
+        print("-----")
+    else:
+        print(f"No se encontró la canción con el título {titulo_cancion}")
+
+# Ejecutar ejemplo de búsqueda por título
+ejemplo_busqueda_por_titulo()
