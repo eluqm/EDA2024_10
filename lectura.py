@@ -1,4 +1,5 @@
 from Cancion import Cancion
+from Trie_autor import Trie_autor 
 from Trie import Trie  # Asegúrate de tener la implementación de Trie y TNode correctamente
 import csv
 
@@ -56,4 +57,31 @@ def ejemplo_busqueda_por_titulo():
         print(f"No se encontró la canción con el título {titulo_cancion}")
 
 # Ejecutar ejemplo de búsqueda por título
-ejemplo_busqueda_por_titulo()
+#ejemplo_busqueda_por_titulo()
+def ejemplo_busqueda_por_artista():
+    archivo_csv = 'spotify_data.csv'  # Reemplaza con tu archivo CSV real
+    canciones = leer_canciones_desde_csv(archivo_csv)
+
+    trie = Trie_autor()
+
+    # Insertar todas las canciones en el trie
+    for cancion in canciones:
+        trie.insert(cancion)
+
+    # Ejemplo de búsqueda por artista
+    artist_name = 'Jason Mraz'  # Reemplaza con el nombre del artista que desees buscar
+    canciones_artista = trie.search_by_artist(artist_name)
+
+    if canciones_artista:
+        for cancion in canciones_artista:
+            print("Canción:", cancion.get_track_name())
+            print("Artista:", cancion.get_artist_name())
+            print("Popularidad:", cancion.get_popularity())
+            print("Año:", cancion.get_year())
+            print("Género:", cancion.get_genre())
+            print("-----")
+    else:
+        print(f"No se encontraron canciones para el artista {artist_name}")
+
+# Ejecutar ejemplo de búsqueda por artista
+ejemplo_busqueda_por_artista()
