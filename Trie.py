@@ -1,35 +1,35 @@
-from TNode import TNode
+from TNode import TNode  # Asegúrate de importar TNode si aún no lo has hecho
 
 class Trie:
     def __init__(self):
         self.root = TNode()
 
-    def insert(self, word):
+    def insert(self, song):
         curr = self.root
-        for c in word:
+        title = song.get_track_name().lower()  # Obtener el título de la canción y convertir a minúsculas
+        for c in title:
             if not curr.has_child(c):
-                curr.add_children(c, TNode())
+                curr.add_child(c, TNode())
             curr = curr.get_child(c)
+        curr.set_song_object(song)
         curr.set_end(True)
-        curr.increments_fecuency()
 
-    def delete(self, word):
-        self._remove(self.root, word, 0)
+    def delete(self, title):
+        self._remove(self.root, title.lower(), 0)
 
-    def _remove(self, curr, word, idx):
-        if idx == len(word):
+    def _remove(self, curr, title, idx):
+        if idx == len(title):
             if not curr.is_end():
                 return False
             curr.set_end(False)
-            curr.decrement_fecuency()
             return not bool(curr.get_children())
 
-        c = word[idx]
+        c = title[idx]
         child = curr.get_child(c)
         if child is None:
             return False
 
-        delete_child = self._remove(child, word, idx + 1)
+        delete_child = self._remove(child, title, idx + 1)
 
         if delete_child:
             del curr.get_children()[c]
@@ -37,23 +37,24 @@ class Trie:
 
         return False
 
-    def replace(self, word, new_word):
-        self.delete(word)
-        self.insert(new_word)
+    def replace(self, title, new_song):
+        self.delete(title)
+        self.insert(new_song)
 
-    def search(self, word):
+    def search(self, title):
         curr = self.root
-        for c in word:
+        title = title.lower()  # Convertir el título de búsqueda a minúsculas
+        for c in title:
             if not curr.has_child(c):
                 return None
             curr = curr.get_child(c)
-        return word if curr.is_end() else None
+        return curr.get_song_object() if curr.is_end() else None
 
     def autocomplete(self, prefix):
         results = []
-        node = self._find_node(prefix)
+        node = self._find_node(prefix.lower())  # Convertir el prefijo a minúsculas
         if node:
-            self._collect_words(node, list(prefix), results)
+            self._collect_songs(node, results)
         return results
 
     def _find_node(self, prefix):
@@ -64,8 +65,8 @@ class Trie:
             curr = curr.get_child(c)
         return curr
 
-    def _collect_words(self, node, prefix, results):
+    def _collect_songs(self, node, results):
         if node.is_end():
-            results.append(''.join(prefix))
+            results.append(node.get_song_object())
         for c, child in node.get_children().items():
-            self._collect_words(child, prefix + [c], results)
+            self._collect_songs(child, results)
