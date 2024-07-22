@@ -1,5 +1,7 @@
 from Cancion import Cancion
+from BSTree import BSTree
 from Trie_autor import Trie_autor 
+from AVLTree_duracion import AVLTree_duracion
 from AVLTree import AVLTree
 from Trie import Trie  # Asegúrate de tener la implementación de Trie y TNode correctamente
 import csv
@@ -108,3 +110,48 @@ def Ordenar_por_popularidad():
         counter=counter+1
 
 #Ordenar_por_popularidad()
+def Ordenar_por_año():
+    bst = BSTree()
+
+# Cargar canciones desde CSV y agregar al BST
+    archivo_csv = 'spotify_data.csv'  # Reemplaza con el nombre de tu archivo CSV
+    canciones = leer_canciones_desde_csv(archivo_csv)
+
+    for cancion in canciones:
+        bst.insert_song(cancion)
+
+# Imprimir canciones agrupadas por año
+    for year, songs in bst.in_order_traversal(bst.root):
+        cout =0
+        if(year ==2023 ):
+            print(f"Año: {year}")
+            for cancion in songs:
+                if(cout>=100):
+                    break
+                print(f"  {cancion.get_track_name()} - {cancion.get_artist_name()} - Popularidad: {cancion.get_popularity()}")
+                print("-----")
+                cout =cout+1
+#Ordenar_por_año()
+def prueba_avl_duracion():
+    avl = AVLTree_duracion()
+
+    # Cargar canciones desde CSV y agregar al AVL
+    archivo_csv = 'spotify_data.csv'  # Reemplaza con el nombre de tu archivo CSV
+    canciones = leer_canciones_desde_csv(archivo_csv)
+
+    root = None
+    for cancion in canciones:
+        root = avl.insert(root, cancion)
+
+    # Imprimir canciones ordenadas por duración (de mayor a menor)
+    count = 0
+    for duration, songs in avl.in_order_traversal(root):
+        if count >= 100:
+            break
+        print(f"Duración: {duration} ms")
+        for cancion in songs:
+            print(f"  {cancion.get_track_name()} - {cancion.get_artist_name()} - Popularidad: {cancion.get_popularity()} - Duración: {cancion.get_duration_ms()} ms")
+            count += 1
+        print("-----")
+        
+prueba_avl_duracion()
