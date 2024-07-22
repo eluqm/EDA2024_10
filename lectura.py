@@ -1,5 +1,6 @@
 from Cancion import Cancion
 from Trie_autor import Trie_autor 
+from AVLTree import AVLTree
 from Trie import Trie  # Asegúrate de tener la implementación de Trie y TNode correctamente
 import csv
 
@@ -84,4 +85,26 @@ def ejemplo_busqueda_por_artista():
         print(f"No se encontraron canciones para el artista {artist_name}")
 
 # Ejecutar ejemplo de búsqueda por artista
-ejemplo_busqueda_por_artista()
+#ejemplo_busqueda_por_artista()
+# Cargar canciones desde el archivo CSV
+def Ordenar_por_popularidad():
+    archivo_csv = 'spotify_data.csv'  # Reemplaza con el nombre de tu archivo CSV
+    canciones = leer_canciones_desde_csv(archivo_csv)
+
+# Crear el árbol AVL
+    avl = AVLTree()
+    root = None
+
+# Insertar canciones en el árbol AVL
+    for cancion in canciones:
+        root = avl.insert(root, cancion)
+
+# Imprimir canciones en orden (ascendente por popularidad)
+    counter=0 
+    for cancion in avl.in_order_traversal(root):
+        if counter >= 1000:
+            break
+        print(f"{cancion.get_track_name()} - {cancion.get_artist_name()} - Popularidad: {cancion.get_popularity()}")
+        counter=counter+1
+
+#Ordenar_por_popularidad()
