@@ -1,5 +1,5 @@
 import random
-from queue import Queue
+from cola_reproduccion import Queue
 
 class Playlist:
     def __init__(self):
