@@ -70,3 +70,14 @@ class Trie:
             results.append(node.get_song_object())
         for c, child in node.get_children().items():
             self._collect_songs(child, results)
+
+    def get_all_songs(self):
+        results = []
+        self._collect_all_songs(self.root, results)
+        return results
+
+    def _collect_all_songs(self, node, results):
+        if node.is_end():
+            results.append(node.get_song_object())
+        for child in node.get_children().values():
+            self._collect_all_songs(child, results)

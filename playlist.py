@@ -1,26 +1,25 @@
-import random
-from cola_reproduccion import Queue
-
 class Playlist:
     def __init__(self):
-        self.playlist = Queue()
+        self.queue = []
+
+    def is_empty(self):
+        return len(self.queue) == 0
+
+    def enqueue(self, item):
+        self.queue.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("dequeue from empty queue")
+        return self.queue.pop(0)
+
+    def peek(self):
+        if self.is_empty():
+            raise IndexError("peek from empty queue")
+        return self.queue[0]
+
+    def size(self):
+        return len(self.queue)
 
     def add_song(self, song):
-        self.playlist.enqueue(song)
-
-    def remove_song(self, index):
-        if 0 <= index < len(self.playlist.queue):
-            self.playlist.queue.pop(index)
-        else:
-            raise IndexError("Index out of range")
-
-    def shuffle(self):
-        random.shuffle(self.playlist.queue)
-
-    def change_order(self, from_index, to_index):
-        if from_index < 0 or from_index >= len(self.playlist.queue) or to_index < 0 or to_index >= len(self.playlist.queue):
-            raise IndexError("index out of range")
-        self.playlist.queue.insert(to_index, self.playlist.queue.pop(from_index))
-
-    def get_playlist(self):
-        return self.playlist.queue
+        self.enqueue(song)

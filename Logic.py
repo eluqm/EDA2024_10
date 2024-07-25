@@ -15,8 +15,8 @@ class Logic:
         self.avl_popularidad = AVLTree()
         self.avl_duracion = AVLTree_duracion()
         self.bst_año = BSTree()
-        self.root_popularidad = None  # Inicializar root para AVL de popularidad
-        self.root_duracion = None  # Inicializar root para AVL de duración
+        self.root_popularidad = None  
+        self.root_duracion = None 
         
         for cancion in self.canciones:
             self.trie.insert(cancion)
@@ -79,5 +79,5 @@ class Logic:
         return canciones
     
     def search_in_trie(self, prefix):
-        songs = self.trie.autocomplete(prefix)  # Obtener canciones que coincidan con el prefijo
+        songs = self.trie.autocomplete(prefix)  
         return songs

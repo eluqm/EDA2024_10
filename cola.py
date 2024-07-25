@@ -1,4 +1,4 @@
-class Queue:
+class Cola:
     def __init__(self):
         self.queue = []
 
